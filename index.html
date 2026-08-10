@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Catálogo de Pruebas Psicológicas — Biblioteca</title>
+<title>Catálogo de Pruebas Psicológicas — Biblioteca UVM | Campus Texcoco</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&family=Roboto:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&family=Lora:wght@500;600&family=Roboto:wght@400;500;700&display=swap');
 
 /* ============================================================
    DESIGN TOKENS — extraídos de iveeapp.com (color, tipografía,
@@ -335,31 +334,19 @@ button{ font-family: inherit; cursor: pointer; }
 .cover{
   width:100%;
   height:100%;
+  box-sizing:border-box;
+  position:relative;
+}
+.cover.cover-back{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-  background: linear-gradient(160deg, var(--navy) 0%, #123a63 100%);
+  background:#002981;
   color: var(--white);
   padding: 60px;
   gap: 18px;
-}
-.cover .cover-mark{
-  width:56px; height:56px;
-  border-radius:50%;
-  border:2px solid rgba(255,255,255,0.5);
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Crimson Text', serif;
-  font-size:26px;
-  margin-bottom:6px;
-}
-.cover .cover-kicker{
-  font-size:12px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color: var(--sky);
-  font-weight:500;
 }
 .cover .cover-title{
   font-family:'Crimson Text', serif;
@@ -375,6 +362,61 @@ button{ font-family: inherit; cursor: pointer; }
   line-height:1.6;
 }
 .cover.cover-back .cover-title{ font-size:28px; }
+
+/* Portada — reproduce el frame "portada-catalogo" de Figma. Las
+   posiciones y anchos están en % del tamaño de la página (no en px
+   fijos) para que se mantengan proporcionales sin importar el ancho
+   real que termine usando PageFlip; los tamaños de letra sí usan
+   --ficha-scale para achicarse igual que el resto del catálogo en
+   pantallas más chicas. */
+.cover.cover-front{
+  background: linear-gradient(160deg, #EBF7FE 0%, #BFE8FF 100%);
+}
+.cover-logo{
+  position:absolute;
+  left:8.6%; top:5.4%;
+  width:19.5%; height:auto;
+}
+.cover-eyebrow{
+  position:absolute;
+  left:60.2%; top:5.8%; width:32%;
+  font-family:'Lora', serif;
+  font-weight:500;
+  font-size:calc(22px * var(--ficha-scale, 1));
+  letter-spacing:-0.04em;
+  line-height:1.35;
+  color:rgba(12,65,112,0.6);
+  text-align:left;
+  margin:0;
+}
+.cover-heading{
+  position:absolute;
+  left:8.6%; top:55.5%; width:72.3%;
+  font-family:'Lora', serif;
+  font-weight:500;
+  font-size:calc(69px * var(--ficha-scale, 1));
+  letter-spacing:-0.03em;
+  line-height:1.15;
+  color:#0C4170;
+  margin:0;
+}
+.cover-rule{
+  position:absolute;
+  left:8.6%; top:86.2%; width:82.9%;
+  border:none;
+  border-top:0.75px solid rgba(12,65,112,0.5);
+  margin:0;
+}
+.cover-edition{
+  position:absolute;
+  left:8.6%; top:89.5%; width:30%;
+  font-family:'Lora', serif;
+  font-weight:500;
+  font-size:calc(16px * var(--ficha-scale, 1));
+  letter-spacing:-0.04em;
+  color:rgba(12,65,112,0.6);
+  margin:0;
+}
 
 /* ============================================================
    FLECHAS DE NAVEGACIÓN
@@ -692,8 +734,37 @@ body.reflow-mode .desc-label{ order:12; padding:0 22px; margin-bottom:12px; }
 body.reflow-mode .desc{ order:13; padding:0 22px; max-width:none; font-size:14px; }
 body.reflow-mode .footer{ order:14; margin:28px 22px 22px; padding:0; }
 body.reflow-mode .sidefoot{ display:none; }
-body.reflow-mode .cover{ padding: 40px 26px; border-radius:16px; }
+body.reflow-mode .cover{ border-radius:16px; }
+body.reflow-mode .cover.cover-back{ padding: 40px 26px; }
 body.reflow-mode .cover .cover-title{ font-size:30px; }
+/* La portada nueva usa posicionamiento absoluto (left/top en %) pensado
+   para el formato de libro; en modo lectura móvil (una sola columna,
+   sin PageFlip) eso colapsaría la altura de la portada porque ningún
+   hijo queda en el flujo normal. Acá la volvemos a flujo normal,
+   apilada de arriba a abajo. */
+body.reflow-mode .cover-front{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  text-align:left;
+  padding:40px 26px 32px;
+  gap:14px;
+}
+body.reflow-mode .cover-front .cover-logo,
+body.reflow-mode .cover-front .cover-eyebrow,
+body.reflow-mode .cover-front .cover-heading,
+body.reflow-mode .cover-front .cover-rule,
+body.reflow-mode .cover-front .cover-edition{
+  position:static;
+  left:auto; top:auto;
+  width:auto;
+  max-width:100%;
+}
+body.reflow-mode .cover-front .cover-logo{ width:150px; order:0; }
+body.reflow-mode .cover-front .cover-heading{ font-size:clamp(26px, 8vw, 38px); order:1; margin-top:6px; }
+body.reflow-mode .cover-front .cover-eyebrow{ font-size:14px; text-align:left; order:2; }
+body.reflow-mode .cover-front .cover-rule{ width:100%; order:3; margin-top:6px; }
+body.reflow-mode .cover-front .cover-edition{ font-size:11px; order:4; }
 body.reflow-mode .nav-arrow,
 body.reflow-mode .zoom-group,
 body.reflow-mode .progress-track{ display:none; }
@@ -806,7 +877,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
   <div class="brand">
-    <span class="brand-kicker">Biblioteca · 70 instrumentos</span>
+    <span class="brand-kicker">Biblioteca UVM | Campus Texcoco · 70 instrumentos</span>
     <span class="brand-title">Catálogo de Pruebas Psicológicas</span>
   </div>
   <div class="topbar-spacer"></div>
@@ -935,11 +1006,11 @@ body.reflow-mode .page-indicator{ display:none; }
           <div class="intro-nav-title">Navegación</div>
           <ul>
             <li>El ícono de menú, arriba a la izquierda, abre el índice completo de las 70 pruebas con buscador por clave, sigla o nombre.</li>
-            <li>Las flechas a los costados avanzan o retroceden una página; también podés arrastrar desde la esquina inferior de la hoja.</li>
+            <li>Las flechas a los costados avanzan o retroceden una página; también puedes arrastrar desde la esquina inferior de la hoja.</li>
             <li>Los controles de zoom, arriba a la derecha, permiten acercar el detalle de cada ficha.</li>
           </ul>
         </div>
-        <div class="intro-foot">Catálogo de Pruebas Psicológicas · Biblioteca universitaria</div>
+        <div class="intro-foot">Catálogo de Pruebas Psicológicas · Biblioteca UVM | Campus Texcoco</div>
       </div>
     </section>
   </div>
@@ -950,11 +1021,12 @@ body.reflow-mode .page-indicator{ display:none; }
     <div id="book">
 
   <div class="pf-leaf" data-density="hard">
-    <div class="cover">
-      <div class="cover-mark">P</div>
-      <div class="cover-kicker">Biblioteca universitaria</div>
-      <div class="cover-title">Catálogo de Pruebas Psicológicas</div>
-      <div class="cover-sub">Setenta instrumentos de evaluación psicológica, organizados en fichas técnicas de referencia para consulta clínica, educativa y de investigación.</div>
+    <div class="cover cover-front">
+      <img class="cover-logo" src="Logo-uvm.svg" alt="Universidad del Valle de México, Campus Texcoco">
+      <p class="cover-eyebrow">Guía de referencia para la consulta y selección de pruebas, escalas y manuales de evaluación psicológica disponibles en la colección.</p>
+      <h1 class="cover-heading">Instrumentos de evaluación psicológica</h1>
+      <hr class="cover-rule">
+      <p class="cover-edition">Catálogo &middot; Edición 2026</p>
     </div>
   </div>
 
@@ -963,7 +1035,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-1</div>
-      <div class="tag">Pruebas proyectivas*</div>
+      <div class="tag">Pruebas proyectivas</div>
       <div class="photo" data-clave="PS-1"><img class="photo-img" src="fotos/PS-1.jpg" alt="Fotografía del material, PS-1"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -977,7 +1049,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 7 a 12 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">45 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">FTT</p>
@@ -1001,7 +1073,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-2</div>
-      <div class="tag">Desarrollo infantil*</div>
+      <div class="tag">Desarrollo infantil</div>
       <div class="photo" data-clave="PS-2"><img class="photo-img" src="fotos/PS-2.jpg" alt="Fotografía del material, PS-2"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1015,7 +1087,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 2 a 5 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">TEPSI</p>
@@ -1039,7 +1111,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-3</div>
-      <div class="tag">Neuropsicología*</div>
+      <div class="tag">Neuropsicología</div>
       <div class="photo" data-clave="PS-3"><img class="photo-img" src="fotos/PS-3.jpg" alt="Fotografía del material, PS-3"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1053,7 +1125,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">DCS</p>
@@ -1077,7 +1149,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-4</div>
-      <div class="tag">Orientación vocacional*</div>
+      <div class="tag">Orientación vocacional</div>
       <div class="photo" data-clave="PS-4"><img class="photo-img" src="fotos/PS-4.jpg" alt="Fotografía del material, PS-4"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1091,7 +1163,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">KUDER</p>
@@ -1115,7 +1187,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-5</div>
-      <div class="tag">Evaluación gerontológica*</div>
+      <div class="tag">Evaluación gerontológica</div>
       <div class="photo" data-clave="PS-5"><img class="photo-img" src="fotos/PS-5.jpg" alt="Fotografía del material, PS-5"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1129,7 +1201,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas mayores</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">25 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">CLIFTON</p>
@@ -1153,7 +1225,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-6</div>
-      <div class="tag">Desarrollo infantil*</div>
+      <div class="tag">Desarrollo infantil</div>
       <div class="photo" data-clave="PS-6"><img class="photo-img" src="fotos/PS-6.jpg" alt="Fotografía del material, PS-6"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1167,7 +1239,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 0 a 6 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">Variable, sin límite de tiempo</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">PORTAGE</p>
@@ -1191,7 +1263,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-7</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-7"><img class="photo-img" src="fotos/PS-7.jpg" alt="Fotografía del material, PS-7"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1205,7 +1277,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 11 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">30 min (45 min con corrección)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">OTIS</p>
@@ -1229,7 +1301,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-8</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-8"><img class="photo-img" src="fotos/PS-8.jpg" alt="Fotografía del material, PS-8"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1243,7 +1315,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 14-15 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">20-25 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">CEP</p>
@@ -1267,7 +1339,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-9</div>
-      <div class="tag">Ansiedad y estrés*</div>
+      <div class="tag">Ansiedad y estrés</div>
       <div class="photo" data-clave="PS-9"><img class="photo-img" src="fotos/PS-9.jpg" alt="Fotografía del material, PS-9"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1281,7 +1353,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 16 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">50 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">ISRA</p>
@@ -1305,7 +1377,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-10</div>
-      <div class="tag">Ansiedad y estrés*</div>
+      <div class="tag">Ansiedad y estrés</div>
       <div class="photo" data-clave="PS-10"><img class="photo-img" src="fotos/PS-10.jpg" alt="Fotografía del material, PS-10"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1319,7 +1391,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos, nivel educativo medio-superior o mayor</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">15-25 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">IDARE</p>
@@ -1343,7 +1415,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-11</div>
-      <div class="tag">Pareja y relaciones*</div>
+      <div class="tag">Pareja y relaciones</div>
       <div class="photo" data-clave="PS-11"><img class="photo-img" src="fotos/PS-11.jpg" alt="Fotografía del material, PS-11"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1357,7 +1429,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos que conviven o han convivido en pareja</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">15-20 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">ASPA</p>
@@ -1381,7 +1453,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-12</div>
-      <div class="tag">Evaluación clínica infantil*</div>
+      <div class="tag">Evaluación clínica infantil</div>
       <div class="photo" data-clave="PS-12"><img class="photo-img" src="fotos/PS-12.jpg" alt="Fotografía del material, PS-12"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1395,7 +1467,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños y adolescentes de 6 a 18 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">ChIPS</p>
@@ -1419,7 +1491,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-13</div>
-      <div class="tag">Bienestar psicológico*</div>
+      <div class="tag">Bienestar psicológico</div>
       <div class="photo" data-clave="PS-13"><img class="photo-img" src="fotos/PS-13.jpg" alt="Fotografía del material, PS-13"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1433,7 +1505,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes (BIEPS-J) y adultos (BIEPS-A)</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">BIEPS</p>
@@ -1457,7 +1529,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-14</div>
-      <div class="tag">Desarrollo infantil*</div>
+      <div class="tag">Desarrollo infantil</div>
       <div class="photo" data-clave="PS-14"><img class="photo-img" src="fotos/PS-14.jpg" alt="Fotografía del material, PS-14"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1471,7 +1543,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños y adolescentes de 8 a 18 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">30-40 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">TAMAI</p>
@@ -1495,7 +1567,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-15</div>
-      <div class="tag">Neuropsicología*</div>
+      <div class="tag">Neuropsicología</div>
       <div class="photo" data-clave="PS-15"><img class="photo-img" src="fotos/PS-15.jpg" alt="Fotografía del material, PS-15"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1509,7 +1581,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">15 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">BG</p>
@@ -1533,7 +1605,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-16</div>
-      <div class="tag">Selección de personal*</div>
+      <div class="tag">Selección de personal</div>
       <div class="photo" data-clave="PS-16"><img class="photo-img" src="fotos/PS-16.jpg" alt="Fotografía del material, PS-16"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1547,7 +1619,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos en contexto laboral</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">25-35 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">CompetEA</p>
@@ -1571,7 +1643,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-17</div>
-      <div class="tag">Aptitudes*</div>
+      <div class="tag">Aptitudes</div>
       <div class="photo" data-clave="PS-17"><img class="photo-img" src="fotos/PS-17.jpg" alt="Fotografía del material, PS-17"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1585,7 +1657,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">17 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">RP-30</p>
@@ -1609,7 +1681,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-18</div>
-      <div class="tag">Psicopatología general*</div>
+      <div class="tag">Psicopatología general</div>
       <div class="photo" data-clave="PS-18"><img class="photo-img" src="fotos/PS-18.jpg" alt="Fotografía del material, PS-18"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1623,7 +1695,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 13 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">12-15 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">SCL-90-R</p>
@@ -1647,7 +1719,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-19</div>
-      <div class="tag">Pruebas proyectivas*</div>
+      <div class="tag">Pruebas proyectivas</div>
       <div class="photo" data-clave="PS-19"><img class="photo-img" src="fotos/PS-19.jpg" alt="Fotografía del material, PS-19"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1661,7 +1733,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">Rorschach</p>
@@ -1685,7 +1757,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-20</div>
-      <div class="tag">Pruebas proyectivas*</div>
+      <div class="tag">Pruebas proyectivas</div>
       <div class="photo" data-clave="PS-20"><img class="photo-img" src="fotos/PS-20.jpg" alt="Fotografía del material, PS-20"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1699,7 +1771,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes desde 11-12 años, y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">60 a 120 minutos según la versión</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">TAT</p>
@@ -1723,7 +1795,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-21</div>
-      <div class="tag">Pruebas proyectivas*</div>
+      <div class="tag">Pruebas proyectivas</div>
       <div class="photo" data-clave="PS-21"><img class="photo-img" src="fotos/PS-21.jpg" alt="Fotografía del material, PS-21"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1737,7 +1809,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 13 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">Variable, aprox. 90 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">TRO</p>
@@ -1761,7 +1833,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-22</div>
-      <div class="tag">Aptitudes*</div>
+      <div class="tag">Aptitudes</div>
       <div class="photo" data-clave="PS-22"><img class="photo-img" src="fotos/PS-22.jpg" alt="Fotografía del material, PS-22"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1775,7 +1847,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">4 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">TO-1</p>
@@ -1799,7 +1871,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-23</div>
-      <div class="tag">Orientación escolar*</div>
+      <div class="tag">Orientación escolar</div>
       <div class="photo" data-clave="PS-23"><img class="photo-img" src="fotos/PS-23.jpg" alt="Fotografía del material, PS-23"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1813,7 +1885,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 12 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">15 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">IHE</p>
@@ -1837,7 +1909,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-24</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-24"><img class="photo-img" src="fotos/PS-24.jpg" alt="Fotografía del material, PS-24"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1851,7 +1923,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 10-11 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">60 minutos (26 min de trabajo efectivo)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">PMA</p>
@@ -1875,7 +1947,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-25</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-25"><img class="photo-img" src="fotos/PS-25.jpg" alt="Fotografía del material, PS-25"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1884,12 +1956,12 @@ body.reflow-mode .page-indicator{ display:none; }
       <div class="meta">
         <div class="row"><div class="label"><span class="dot"></span>Autor(es)</div><div class="value">Theodore Millon</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Año / edición</div><div class="value">No especificado en fuentes consultadas</div></div>
-        <div class="row"><div class="label"><span class="dot"></span>Editorial</div><div class="value">TEA Ediciones</div></div>
+        <div class="row"><div class="label"><span class="dot"></span>Editorial</div><div class="value">Editorial Paidós</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Aplicación</div><div class="value">Individual o colectiva</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos de 18 a 65 años, funcionamiento normal</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">30-40 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">MIPS</p>
@@ -1900,7 +1972,7 @@ body.reflow-mode .page-indicator{ display:none; }
       <div class="desc-label"><span class="dot"></span>Descripción</div>
       <p class="desc">El MIPS fue desarrollado por Theodore Millon para evaluar la personalidad de adultos de funcionamiento normal, entre los 18 y los 65 años. Su punto de partida es que los mismos principios que subyacen a los rasgos patológicos de personalidad deberían explicar también las personalidades dentro del rango normal, por lo que Millon utilizó conceptos sobre tres polaridades evolutivas básicas para deducir características esenciales de la normalidad. Es un cuestionario de 180 elementos con formato de respuesta Verdadero o Falso, que se completa en 30 a 40 minutos y puede aplicarse de forma individual o colectiva. Sus escalas se agrupan en tres grandes áreas: metas motivacionales, modos cognitivos y comportamientos interpersonales, y evalúa en conjunto 24 escalas de personalidad y 3 escalas de validez que detectan la tendencia del sujeto a distorsionar sus respuestas para dar una imagen positiva o negativa de sí mismo. La adaptación española estuvo a cargo de M.P. Sánchez López, J.F. Díaz Morales y M. Aparicio García, de la Universidad Complutense.</p>
       <div class="footer">
-        <div class="source"><span class="dot"></span>Fuente: Millon, T. MIPS: Inventario Millon de Estilos de Personalidad. Madrid: TEA Ediciones.</div>
+        <div class="source"><span class="dot"></span>Fuente: Millon, T. MIPS: Inventario Millon de Estilos de Personalidad. Editorial Paidós.</div>
         <div class="fr"><b>25</b></div>
       </div>
     </div>
@@ -1913,7 +1985,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-26</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-26"><img class="photo-img" src="fotos/PS-26.jpg" alt="Fotografía del material, PS-26"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1927,7 +1999,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos de 18 a 65 años, funcionamiento normal</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">30-40 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">MIPS</p>
@@ -1951,7 +2023,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-27</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-27"><img class="photo-img" src="fotos/PS-27.jpg" alt="Fotografía del material, PS-27"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -1965,7 +2037,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos (contexto clínico)</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">15-25 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">MCMI-II</p>
@@ -1989,7 +2061,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-28</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-28"><img class="photo-img" src="fotos/PS-28.jpg" alt="Fotografía del material, PS-28"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2003,7 +2075,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 8 a 12 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">30-40 minutos por sesión (dos sesiones)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">CPQ</p>
@@ -2027,7 +2099,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-29</div>
-      <div class="tag">Orientación escolar*</div>
+      <div class="tag">Orientación escolar</div>
       <div class="photo" data-clave="PS-29"><img class="photo-img" src="fotos/PS-29.jpg" alt="Fotografía del material, PS-29"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2041,7 +2113,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Estudiantes</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">CHTE</p>
@@ -2065,7 +2137,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-30</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-30"><img class="photo-img" src="fotos/PS-30.jpg" alt="Fotografía del material, PS-30"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2079,7 +2151,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">PNP</p>
@@ -2103,7 +2175,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-31</div>
-      <div class="tag">Ansiedad y estrés*</div>
+      <div class="tag">Ansiedad y estrés</div>
       <div class="photo" data-clave="PS-31"><img class="photo-img" src="fotos/PS-31.jpg" alt="Fotografía del material, PS-31"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2117,7 +2189,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos de 18 a 85 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">20-30 minutos por escala</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">EAE</p>
@@ -2141,7 +2213,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-32</div>
-      <div class="tag">Ansiedad y estrés*</div>
+      <div class="tag">Ansiedad y estrés</div>
       <div class="photo" data-clave="PS-32"><img class="photo-img" src="fotos/PS-32.jpg" alt="Fotografía del material, PS-32"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2155,7 +2227,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños y adolescentes de 6 a 19 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">10-15 min (completa); 5 min o menos (breve)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">CMAS-R</p>
@@ -2179,7 +2251,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-33</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-33"><img class="photo-img" src="fotos/PS-33.jpg" alt="Fotografía del material, PS-33"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2193,7 +2265,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">AF5</p>
@@ -2217,7 +2289,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-34</div>
-      <div class="tag">Selección de personal*</div>
+      <div class="tag">Selección de personal</div>
       <div class="photo" data-clave="PS-34"><img class="photo-img" src="fotos/PS-34.jpg" alt="Fotografía del material, PS-34"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2231,7 +2303,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos, en el entorno laboral</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">25 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">CLA</p>
@@ -2255,7 +2327,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-35</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-35"><img class="photo-img" src="fotos/PS-35.jpg" alt="Fotografía del material, PS-35"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2269,7 +2341,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">IRT</p>
@@ -2293,7 +2365,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-36</div>
-      <div class="tag">Manual clínico*</div>
+      <div class="tag">Manual clínico</div>
       <div class="photo" data-clave="PS-36"><img class="photo-img" src="fotos/PS-36.jpg" alt="Fotografía del material, PS-36"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2307,7 +2379,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Pacientes en contextos de urgencia o psicoterapia breve</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No aplica</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">MPBIU</p>
@@ -2331,7 +2403,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-37</div>
-      <div class="tag">Selección de personal*</div>
+      <div class="tag">Selección de personal</div>
       <div class="photo" data-clave="PS-37"><img class="photo-img" src="fotos/PS-37.jpg" alt="Fotografía del material, PS-37"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2345,7 +2417,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos, en contexto laboral</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">30 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">FIGS</p>
@@ -2369,7 +2441,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-38</div>
-      <div class="tag">Pareja y relaciones*</div>
+      <div class="tag">Pareja y relaciones</div>
       <div class="photo" data-clave="PS-38"><img class="photo-img" src="fotos/PS-38.jpg" alt="Fotografía del material, PS-38"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2383,7 +2455,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes desde 16 años y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">10 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">ESFA</p>
@@ -2407,7 +2479,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-39</div>
-      <div class="tag">Conducta alimentaria*</div>
+      <div class="tag">Conducta alimentaria</div>
       <div class="photo" data-clave="PS-39"><img class="photo-img" src="fotos/PS-39.jpg" alt="Fotografía del material, PS-39"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2421,7 +2493,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 11 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">20 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">EDI-2</p>
@@ -2445,7 +2517,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-40</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-40"><img class="photo-img" src="fotos/PS-40.jpg" alt="Fotografía del material, PS-40"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2459,7 +2531,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos de 16 a 89 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">P-IPG</p>
@@ -2483,7 +2555,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-41</div>
-      <div class="tag">Conducta antisocial*</div>
+      <div class="tag">Conducta antisocial</div>
       <div class="photo" data-clave="PS-41"><img class="photo-img" src="fotos/PS-41.jpg" alt="Fotografía del material, PS-41"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2497,7 +2569,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y jóvenes de 11 a 19 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">10-15 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">A-D</p>
@@ -2521,7 +2593,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-42</div>
-      <div class="tag">Evaluación clínica infantil*</div>
+      <div class="tag">Evaluación clínica infantil</div>
       <div class="photo" data-clave="PS-42"><img class="photo-img" src="fotos/PS-42.jpg" alt="Fotografía del material, PS-42"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2535,7 +2607,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 6 a 12 años (1.º a 6.º de primaria)</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">5-10 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">EDAH</p>
@@ -2559,7 +2631,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-43</div>
-      <div class="tag">Neuropsicología*</div>
+      <div class="tag">Neuropsicología</div>
       <div class="photo" data-clave="PS-43"><img class="photo-img" src="fotos/PS-43.jpg" alt="Fotografía del material, PS-43"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2573,7 +2645,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas de 3 a 17 años y 11 meses</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">10-15 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">VMI</p>
@@ -2597,7 +2669,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-44</div>
-      <div class="tag">Neuropsicología*</div>
+      <div class="tag">Neuropsicología</div>
       <div class="photo" data-clave="PS-44"><img class="photo-img" src="fotos/PS-44.jpg" alt="Fotografía del material, PS-44"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2611,7 +2683,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 7 años a 11 años 11 meses</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">Aprox. 3 horas (en dos sesiones)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">BANETA</p>
@@ -2635,7 +2707,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-45</div>
-      <div class="tag">Desarrollo infantil*</div>
+      <div class="tag">Desarrollo infantil</div>
       <div class="photo" data-clave="PS-45"><img class="photo-img" src="fotos/PS-45.jpg" alt="Fotografía del material, PS-45"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2649,7 +2721,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Bebés y niños de 0 a 2 años, con necesidades especiales</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No aplica</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">CURRÍCULO CAROLINA</p>
@@ -2673,7 +2745,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-46</div>
-      <div class="tag">Orientación vocacional*</div>
+      <div class="tag">Orientación vocacional</div>
       <div class="photo" data-clave="PS-46"><img class="photo-img" src="fotos/PS-46.jpg" alt="Fotografía del material, PS-46"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2687,7 +2759,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">KUDER-P</p>
@@ -2711,7 +2783,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-47</div>
-      <div class="tag">Atención y concentración*</div>
+      <div class="tag">Atención y concentración</div>
       <div class="photo" data-clave="PS-47"><img class="photo-img" src="fotos/PS-47.jpg" alt="Fotografía del material, PS-47"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2725,7 +2797,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños, adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">8-10 minutos (incluidas instrucciones)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">d2</p>
@@ -2749,7 +2821,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-48</div>
-      <div class="tag">Desarrollo infantil*</div>
+      <div class="tag">Desarrollo infantil</div>
       <div class="photo" data-clave="PS-48"><img class="photo-img" src="fotos/PS-48.jpg" alt="Fotografía del material, PS-48"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2763,7 +2835,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 0 a 3 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">AEPS</p>
@@ -2787,7 +2859,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-49</div>
-      <div class="tag">Orientación vocacional*</div>
+      <div class="tag">Orientación vocacional</div>
       <div class="photo" data-clave="PS-49"><img class="photo-img" src="fotos/PS-49.jpg" alt="Fotografía del material, PS-49"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2801,7 +2873,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes a partir de 13 años y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">20-35 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">IPP-R</p>
@@ -2825,7 +2897,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-50</div>
-      <div class="tag">Orientación escolar*</div>
+      <div class="tag">Orientación escolar</div>
       <div class="photo" data-clave="PS-50"><img class="photo-img" src="fotos/PS-50.jpg" alt="Fotografía del material, PS-50"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2839,7 +2911,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas a partir de 12 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">15 minutos aprox.</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">IHE</p>
@@ -2863,7 +2935,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-51</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-51"><img class="photo-img" src="fotos/PS-51.jpg" alt="Fotografía del material, PS-51"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2877,7 +2949,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">16PF</p>
@@ -2901,7 +2973,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-52</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-52"><img class="photo-img" src="fotos/PS-52.jpg" alt="Fotografía del material, PS-52"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2915,7 +2987,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">16PF</p>
@@ -2939,7 +3011,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-53</div>
-      <div class="tag">Neuropsicología*</div>
+      <div class="tag">Neuropsicología</div>
       <div class="photo" data-clave="PS-53"><img class="photo-img" src="fotos/PS-53.jpg" alt="Fotografía del material, PS-53"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2953,7 +3025,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas de 16 a 85 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">NEUROPSI</p>
@@ -2977,7 +3049,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-54</div>
-      <div class="tag">Orientación vocacional*</div>
+      <div class="tag">Orientación vocacional</div>
       <div class="photo" data-clave="PS-54"><img class="photo-img" src="fotos/PS-54.jpg" alt="Fotografía del material, PS-54"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -2991,7 +3063,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Nivel 1: 1.º-4.º ESO y grado medio; Nivel 2: bachillerato, grado superior y adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">Aprox. 3 horas y media (con instrucciones)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">DAT-5</p>
@@ -3015,7 +3087,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-55</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-55"><img class="photo-img" src="fotos/PS-55.jpg" alt="Fotografía del material, PS-55"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3029,7 +3101,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas de 3 a 94 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">Aprox. 40 minutos (RIAS)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">RIAS / RIST</p>
@@ -3053,7 +3125,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-56</div>
-      <div class="tag">Neuropsicología*</div>
+      <div class="tag">Neuropsicología</div>
       <div class="photo" data-clave="PS-56"><img class="photo-img" src="fotos/PS-56.jpg" alt="Fotografía del material, PS-56"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3067,7 +3139,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 4 a 10 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">DTVP-2</p>
@@ -3091,7 +3163,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-57</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-57"><img class="photo-img" src="fotos/PS-57.jpg" alt="Fotografía del material, PS-57"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3105,7 +3177,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">PAI</p>
@@ -3129,7 +3201,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-58</div>
-      <div class="tag">Evaluación clínica infantil*</div>
+      <div class="tag">Evaluación clínica infantil</div>
       <div class="photo" data-clave="PS-58"><img class="photo-img" src="fotos/PS-58.jpg" alt="Fotografía del material, PS-58"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3143,7 +3215,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 3 a 10 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">Aprox. 60 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">ITPA</p>
@@ -3167,7 +3239,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-59</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-59"><img class="photo-img" src="fotos/PS-59.jpg" alt="Fotografía del material, PS-59"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3181,7 +3253,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">60-90 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">MMPI-2</p>
@@ -3205,7 +3277,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-60</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-60"><img class="photo-img" src="fotos/PS-60.jpg" alt="Fotografía del material, PS-60"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3219,7 +3291,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas de 16 a 94 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">WAIS-III</p>
@@ -3243,7 +3315,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-61</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-61"><img class="photo-img" src="fotos/PS-61.jpg" alt="Fotografía del material, PS-61"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3257,7 +3329,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños en edad escolar</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">WISC-RM</p>
@@ -3281,7 +3353,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-62</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-62"><img class="photo-img" src="fotos/PS-62.jpg" alt="Fotografía del material, PS-62"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3295,7 +3367,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 6 a 16 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">WISC-IV</p>
@@ -3319,7 +3391,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-63</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-63"><img class="photo-img" src="fotos/PS-63.jpg" alt="Fotografía del material, PS-63"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3333,7 +3405,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Personas de 16 a 90 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">60-90 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">WAIS-IV</p>
@@ -3357,7 +3429,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-64</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-64"><img class="photo-img" src="fotos/PS-64.jpg" alt="Fotografía del material, PS-64"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3371,7 +3443,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños en edad preescolar y primaria</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">WPPSI</p>
@@ -3395,7 +3467,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-65</div>
-      <div class="tag">Inteligencia*</div>
+      <div class="tag">Inteligencia</div>
       <div class="photo" data-clave="PS-65"><img class="photo-img" src="fotos/PS-65.jpg" alt="Fotografía del material, PS-65"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3409,7 +3481,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 2 años 6 meses a 7 años 3 meses</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">WPPSI-III</p>
@@ -3433,7 +3505,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-66</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-66"><img class="photo-img" src="fotos/PS-66.jpg" alt="Fotografía del material, PS-66"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3447,7 +3519,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adolescentes de 14 a 18 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">MMPI-A</p>
@@ -3471,7 +3543,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-67</div>
-      <div class="tag">Neuropsicología*</div>
+      <div class="tag">Neuropsicología</div>
       <div class="photo" data-clave="PS-67"><img class="photo-img" src="fotos/PS-67.jpg" alt="Fotografía del material, PS-67"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3485,7 +3557,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 5 a 16 años</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">Aprox. 180 minutos (versión completa)</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">ENI-2</p>
@@ -3509,7 +3581,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-68</div>
-      <div class="tag">Desarrollo infantil*</div>
+      <div class="tag">Desarrollo infantil</div>
       <div class="photo" data-clave="PS-68"><img class="photo-img" src="fotos/PS-68.jpg" alt="Fotografía del material, PS-68"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3523,7 +3595,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Niños de 2 años y medio a 8 años y medio</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">MSCA</p>
@@ -3547,7 +3619,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-69</div>
-      <div class="tag">Personalidad*</div>
+      <div class="tag">Personalidad</div>
       <div class="photo" data-clave="PS-69"><img class="photo-img" src="fotos/PS-69.jpg" alt="Fotografía del material, PS-69"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3561,7 +3633,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Adultos</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">60-90 minutos</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">MMPI-2</p>
@@ -3585,7 +3657,7 @@ body.reflow-mode .page-indicator{ display:none; }
     <div class="side">
       <div class="accent"></div>
       <div class="kicker">Ficha PS-70</div>
-      <div class="tag">Desarrollo infantil*</div>
+      <div class="tag">Desarrollo infantil</div>
       <div class="photo" data-clave="PS-70"><img class="photo-img" src="fotos/PS-70.jpg" alt="Fotografía del material, PS-70"><div class="photo-fallback"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0C4170" stroke-width="1.5" opacity="0.4"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Fotografía del material</span></div></div>
       <div class="highlight">
         <div class="hk"><span class="dot"></span>Indicado para</div>
@@ -3599,7 +3671,7 @@ body.reflow-mode .page-indicator{ display:none; }
         <div class="row"><div class="label"><span class="dot"></span>Población</div><div class="value">Bebés y niños pequeños</div></div>
         <div class="row"><div class="label"><span class="dot"></span>Duración</div><div class="value">No especificado en fuentes consultadas</div></div>
       </div>
-      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca</div>
+      <div class="sidefoot">Catálogo de pruebas psicológicas<br>Biblioteca UVM | Campus Texcoco</div>
     </div>
     <div class="main">
       <p class="acronym">BSID</p>
@@ -3621,7 +3693,7 @@ body.reflow-mode .page-indicator{ display:none; }
   <div class="pf-leaf" data-density="hard">
     <div class="cover cover-back">
       <div class="cover-title">Fin del catálogo</div>
-      <div class="cover-sub">70 pruebas psicológicas documentadas a partir de fuentes verificables. Biblioteca universitaria.</div>
+      <div class="cover-sub">70 pruebas psicológicas documentadas a partir de fuentes verificables. Biblioteca UVM | Campus Texcoco.</div>
     </div>
   </div>
 
@@ -3637,7 +3709,7 @@ body.reflow-mode .page-indicator{ display:none; }
 </main>
 
 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-<div class="hint-toast" id="hintToast">Arrastrá la esquina inferior de la página para pasar hoja · Doble clic para hacer zoom</div>
+<div class="hint-toast" id="hintToast">Arrastra la esquina inferior de la página para pasar hoja · Doble clic para hacer zoom</div>
 
 <script src="vendor/page-flip.js"></script>
 <script src="app.js"></script>
