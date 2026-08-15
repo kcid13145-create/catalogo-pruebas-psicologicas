@@ -17,35 +17,6 @@
   }
 
   /* ==========================================================
-     DIAGNÓSTICO TEMPORAL EN PANTALLA — borrar todo este bloque y
-     cada llamada a debugLog() una vez resuelto el bug del menú en
-     móvil. Muestra un panelito con las últimas líneas de registro
-     directamente sobre la página, para poder ver qué pasa en un
-     celular real sin necesidad de conectarlo a una computadora.
-     ========================================================== */
-  var debugPanel = null;
-  var debugLines = [];
-  function debugLog(msg) {
-    debugLines.push(msg);
-    if (debugLines.length > 40) debugLines.shift();
-    if (!debugPanel) {
-      debugPanel = document.createElement('div');
-      debugPanel.style.cssText = 'position:fixed; left:0; right:0; bottom:0; max-height:45vh; overflow-y:auto; background:rgba(0,0,0,0.88); color:#5CFF9D; font:11px/1.5 monospace; padding:8px; z-index:99999; white-space:pre-wrap; word-break:break-all;';
-      document.body.appendChild(debugPanel);
-    }
-    debugPanel.textContent = debugLines.join('\n');
-    debugPanel.scrollTop = debugPanel.scrollHeight;
-    if (window.console && console.log) console.log(msg);
-  }
-  /* Lee la posición de scroll real sin importar si el elemento que
-     realmente se desplaza es <html>, <body> o la ventana — antes solo
-     mirábamos window.scrollY, que se queda en 0 si el que en verdad
-     se mueve es <body> (ver corrección de html.reflow-mode más abajo). */
-  function curScroll() {
-    return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
-  }
-
-  /* ==========================================================
      ARRANQUE — decide modo libro (PageFlip) o modo lectura
      (una sola columna, sin PageFlip) según el ancho de pantalla
      ========================================================== */
@@ -313,7 +284,6 @@
   var drawerItems = Array.prototype.slice.call(document.querySelectorAll('.drawer-item'));
 
   function openDrawer() {
-    debugLog('openDrawer()');
     drawer.classList.add('open');
     drawerOverlay.classList.add('open');
     /* Si quedó texto de una búsqueda anterior, la lista sigue filtrada
@@ -325,27 +295,20 @@
       drawerItems.forEach(function (item) { item.style.display = ''; });
       if (drawerEmpty) drawerEmpty.style.display = 'none';
     }
-    /* SOSPECHOSO PRINCIPAL del bug de navegación en móvil: enfocar el
-       buscador automáticamente abre el teclado virtual del celular,
-       lo que reduce el alto visible de la pantalla y RECOLOCA todos
-       los ítems del menú justo cuando el usuario está por tocar uno.
-       El dedo llega a una posición que ya no corresponde a ningún
-       ítem (o corresponde al overlay), y el toque falla o cae en el
-       lugar equivocado. En escritorio no hay teclado virtual, por
-       eso el bug nunca se reproducía ahí. Se desactiva el autofocus
-       solo en modo móvil (reflow); en escritorio se conserva porque
-       un teclado físico no mueve nada en pantalla. */
+    /* En móvil no enfocamos el buscador automáticamente: hacerlo abre
+       el teclado virtual apenas se abre el menú, y con 70 fichas la
+       mayoría de las personas primero quiere mirar la lista, no
+       escribir. En escritorio sí se conserva porque ahí no hay teclado
+       virtual que le robe espacio a la pantalla. */
     if (!reflowMode) {
       setTimeout(function () { drawerSearch.focus(); }, 150);
     }
   }
   function closeDrawer() {
-    debugLog('closeDrawer()');
     drawer.classList.remove('open');
     drawerOverlay.classList.remove('open');
   }
   menuBtn.addEventListener('click', function () {
-    debugLog('menuBtn click, open=' + drawer.classList.contains('open'));
     if (drawer.classList.contains('open')) closeDrawer(); else openDrawer();
   });
   drawerCloseBtn.addEventListener('click', closeDrawer);
@@ -365,20 +328,12 @@
          se queda encima cubriendo la pantalla. */
       closeIntro();
       var leafIndex = parseInt(item.getAttribute('data-leaf'), 10);
-      /* DIAGNÓSTICO TEMPORAL — borrar cuando encontremos la causa del bug
-         del menú en móvil. */
-      debugLog('toque leaf=' + leafIndex + ' reflow=' + reflowMode + ' scroll=' + curScroll());
       if (reflowMode) {
         var target = document.querySelector('.pf-leaf[data-leaf-index="' + leafIndex + '"]');
-        debugLog('target encontrado=' + !!target);
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          debugLog('scrollIntoView llamado');
         }
         updateActiveDrawerItem(leafIndex);
-        setTimeout(function () {
-          debugLog('scroll +600ms=' + curScroll());
-        }, 600);
       } else if (pageFlip) {
         pageFlip.turnToPage(leafIndex);
         updateIndicator(leafIndex);
