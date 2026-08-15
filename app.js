@@ -37,6 +37,13 @@
     debugPanel.scrollTop = debugPanel.scrollHeight;
     if (window.console && console.log) console.log(msg);
   }
+  /* Lee la posición de scroll real sin importar si el elemento que
+     realmente se desplaza es <html>, <body> o la ventana — antes solo
+     mirábamos window.scrollY, que se queda en 0 si el que en verdad
+     se mueve es <body> (ver corrección de html.reflow-mode más abajo). */
+  function curScroll() {
+    return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+  }
 
   /* ==========================================================
      ARRANQUE — decide modo libro (PageFlip) o modo lectura
@@ -46,9 +53,11 @@
     reflowMode = currentModeIsReflow();
     if (reflowMode) {
       document.body.classList.add('reflow-mode');
+      document.documentElement.classList.add('reflow-mode');
       setupReflowNavigation();
     } else {
       document.body.classList.remove('reflow-mode');
+      document.documentElement.classList.remove('reflow-mode');
       waitForReadyThenInit();
     }
     setupPhotoFallbacks();
@@ -358,7 +367,7 @@
       var leafIndex = parseInt(item.getAttribute('data-leaf'), 10);
       /* DIAGNÓSTICO TEMPORAL — borrar cuando encontremos la causa del bug
          del menú en móvil. */
-      debugLog('toque leaf=' + leafIndex + ' reflow=' + reflowMode + ' scrollY=' + window.scrollY);
+      debugLog('toque leaf=' + leafIndex + ' reflow=' + reflowMode + ' scroll=' + curScroll());
       if (reflowMode) {
         var target = document.querySelector('.pf-leaf[data-leaf-index="' + leafIndex + '"]');
         debugLog('target encontrado=' + !!target);
@@ -368,7 +377,7 @@
         }
         updateActiveDrawerItem(leafIndex);
         setTimeout(function () {
-          debugLog('scrollY +600ms=' + window.scrollY);
+          debugLog('scroll +600ms=' + curScroll());
         }, 600);
       } else if (pageFlip) {
         pageFlip.turnToPage(leafIndex);

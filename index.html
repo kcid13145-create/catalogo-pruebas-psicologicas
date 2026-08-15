@@ -671,6 +671,17 @@ button{ font-family: inherit; cursor: pointer; }
 /* ============================================================
    MODO LECTURA MÓVIL (una sola columna, sin efecto de libro)
    ============================================================ */
+/* En escritorio html y body se dejan fijos (overflow:hidden) a propósito:
+   el libro ocupa toda la pantalla y no debe haber scroll de página. En
+   móvil eso mismo era el problema real detrás del bug del menú: solo
+   "body" recuperaba overflow:auto, pero <html> seguía con overflow:hidden,
+   así que en vez de scrollear la PÁGINA, "body" se convertía en su propio
+   cajón de scroll aislado (como un div con overflow:auto). scrollIntoView()
+   y el scroll normal terminan comportándose de forma inconsistente en ese
+   esquema en navegadores móviles reales (no se nota en el modo de
+   emulación de escritorio). Al liberar también <html> aquí, el scroll
+   vuelve a ser el scroll normal y estándar del documento. */
+html.reflow-mode{ overflow:auto; height:auto; }
 body.reflow-mode{ overflow:auto; }
 body.reflow-mode .viewer-stage{
   position:static;
