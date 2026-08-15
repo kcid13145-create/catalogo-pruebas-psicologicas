@@ -284,6 +284,15 @@
   function openDrawer() {
     drawer.classList.add('open');
     drawerOverlay.classList.add('open');
+    /* Si quedó texto de una búsqueda anterior, la lista sigue filtrada
+       (la mayoría de los botones ocultos) sin que se note a simple
+       vista. Reiniciamos el buscador cada vez que se abre el menú para
+       que todas las fichas estén siempre visibles y tocables. */
+    if (drawerSearch.value) {
+      drawerSearch.value = '';
+      drawerItems.forEach(function (item) { item.style.display = ''; });
+      if (drawerEmpty) drawerEmpty.style.display = 'none';
+    }
     setTimeout(function () { drawerSearch.focus(); }, 150);
   }
   function closeDrawer() {
