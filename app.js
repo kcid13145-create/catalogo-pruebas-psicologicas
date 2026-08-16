@@ -113,8 +113,16 @@
       if (!w || w <= 0) return;
       var scale = w / 850;
       /* límites de seguridad para evitar texto absurdamente chico o grande
-         si algo midiera mal */
-      scale = Math.max(0.55, Math.min(scale, 1.15));
+         si algo midiera mal. El piso NO puede ser más alto que el ancho
+         mínimo real que computeMaxWidth() puede llegar a usar (260px,
+         ver más arriba) — 260/850 ≈ 0.306. Antes el piso estaba en 0.55:
+         en laptops con poca altura de pantalla (comunes en salas de
+         cómputo escolares), computeMaxWidth() reduce el ancho de la
+         página por debajo de ese piso para que la hoja completa quepa
+         sin scroll, pero el texto no se achicaba a la par — quedaba más
+         grande de lo que la página medía y la parte final del contenido
+         se recortaba (las hojas no tienen scroll interno). */
+      scale = Math.max(0.3, Math.min(scale, 1.15));
       document.documentElement.style.setProperty('--ficha-scale', scale.toFixed(4));
     } catch (err) {
       /* si algo falla, --ficha-scale se queda en 1 (valor por defecto en :root)
